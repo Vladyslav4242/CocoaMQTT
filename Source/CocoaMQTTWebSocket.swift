@@ -396,6 +396,10 @@ extension CocoaMQTTWebSocket.FoundationConnection: URLSessionWebSocketDelegate {
             self.delegate?.connectionClosed(self, withError: CocoaMQTTError.FoundationConnection.closed(closeCode), withCode: nil)
         }
     }
+    
+    public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+         return (.performDefaultHandling, nil)
+    }
 }
 
 // MARK: - CocoaMQTTWebSocket.StarscreamConnection
@@ -457,7 +461,7 @@ extension CocoaMQTTWebSocket.StarscreamConnection: CertificatePinning {
 }
 
 extension CocoaMQTTWebSocket.StarscreamConnection: WebSocketDelegate {
-    public func didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) {
+    public func didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocketClient) {
         switch event {
         case .connected(_):
             delegate?.connectionOpened(self)
